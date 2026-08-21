@@ -26,6 +26,7 @@ const orbitItems = computed(() => {
   return skillItems.value.map((item, i) => {
     const angle = (360 / n) * i
     const delay = -(angle / 360) * ORBIT_DURATION
+    const enterDelay = 0.12 + i * 0.14
     const initials = item.name
       .replace(/[^A-Za-z0-9]/g, ' ')
       .trim()
@@ -34,7 +35,7 @@ const orbitItems = computed(() => {
       .slice(0, 2)
       .join('')
       .toUpperCase()
-    return { ...item, angle, delay, initials }
+    return { ...item, angle, delay, enterDelay, initials }
   })
 })
 
@@ -235,16 +236,9 @@ onUnmounted(() => {
 })
 
 const stuffTechStack = ref([
-  { name: 'Laravel', category: 'Backend' },
-  { name: 'Vue / Nuxt', category: 'Frontend' },
-  { name: 'Tailwind CSS', category: 'Styling' },
-  { name: 'Docker', category: 'Env' },
-  { name: 'MySQL', category: 'Database' },
-  { name: 'Git / GitHub', category: 'Version Control' },
-  { name: 'VPS / Cloud', category: 'Deployment' },
+  { name: 'i will add it ASAP', category: 'i just think about this small potato stuff' },
 ])
 
-/* ---------- Navbar ---------- */
 const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
@@ -291,6 +285,36 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleNavScroll)
   if (sectionObserver) sectionObserver.disconnect()
+})
+
+/* ---------- Scroll reveal (fun pop-in on scroll) ---------- */
+let revealObserver = null
+
+onMounted(() => {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => el.classList.add('is-visible'))
+    return
+  }
+
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          revealObserver.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+  )
+
+  document.querySelectorAll('.reveal, .reveal-scale').forEach((el) => revealObserver.observe(el))
+})
+
+onUnmounted(() => {
+  if (revealObserver) revealObserver.disconnect()
 })
 </script>
 
@@ -352,12 +376,6 @@ onUnmounted(() => {
         <img src="/img/spiderman.png" class="char-img" draggable="false" alt="" />
       </div>
 
-      <div class="hero-top">
-        <span class="eyebrow">Reserved</span>
-        <span class="eyebrow">Portfolio</span>
-        <span class="eyebrow eyebrow--right">2026</span>
-      </div>
-
       <h1 class="hero-title">
         <span class="hero-title-label">Not a genius, billionare, playgirl, philantropist <br> but definitely a knowledge seeker</span>
         <span class="hero-title-outline">Hi! i'm Niken</span>
@@ -374,15 +392,15 @@ onUnmounted(() => {
       <div class="glow glow--tertiary" aria-hidden="true"></div>
       <div class="aboutme-grid">
         <div class="aboutme-text">
-          <span class="section-label">About Me</span>
-          <h2 class="aboutme-title">
+          <span class="section-label reveal">About Me</span>
+          <h2 class="aboutme-title reveal" style="transition-delay: 0.08s">
             Okey lets do this<br />one last time yeah
           </h2>
-          <p class="aboutme-body">
-            My name is Niken Putri Maharani, I was bitten by a radioactive spider. And for like two days, I've been the one and only Spider-Man. I think you know the rest. I finished my essay. I saved a bunch of people. Got hit by a drone. Did this with my dad. Met my roommate finally. Slapped a sticker where my Dad's never going to find it. And when I feel alone, like no one understands what I'm going through, I remember my friends who get it. I never thought I'd be able to do any of this stuff. But I can. Anyone can wear the mask. You can wear the mask. If you didn't know that before, I hope you do now. Cuz I'm Spider-Man. And I'm not the only one. Not by a long shot.</p>
+          <p class="aboutme-body reveal" style="transition-delay: 0.16s">
+            My name is Niken Putri Maharani, a vocational high school student exploring the world of web development. Beyond crafting web applications, I’m fascinated by IoT and how software interacts with the physical world. Actively learning, building, and ready for new challenges! </p>
 
           <div class="aboutme-lower">
-            <div class="aboutme-facts">
+            <div class="aboutme-facts reveal" style="transition-delay: 0.24s">
               <div class="aboutme-fact">
                 <span class="aboutme-fact-value">3</span>
                 <span class="aboutme-fact-label">Years Learning</span>
@@ -402,7 +420,12 @@ onUnmounted(() => {
             <div class="aboutme-edu">
               <span class="aboutme-edu-title">Education</span>
               <ul class="edu-timeline">
-                <li class="edu-timeline-item" v-for="(e, i) in educations" :key="'edu-' + i">
+                <li
+                  class="edu-timeline-item reveal"
+                  v-for="(e, i) in educations"
+                  :key="'edu-' + i"
+                  :style="{ transitionDelay: (i * 0.1) + 's' }"
+                >
                   <span class="edu-timeline-dot" aria-hidden="true"></span>
                   <span class="edu-timeline-year">{{ e.year }}</span>
                   <h4 class="edu-timeline-role">{{ e.role }}</h4>
@@ -414,7 +437,12 @@ onUnmounted(() => {
             <div class="aboutme-edu aboutme-exp">
               <span class="aboutme-edu-title">Experience</span>
               <ul class="edu-timeline">
-                <li class="edu-timeline-item" v-for="(x, i) in experiences" :key="'exp-' + i">
+                <li
+                  class="edu-timeline-item reveal"
+                  v-for="(x, i) in experiences"
+                  :key="'exp-' + i"
+                  :style="{ transitionDelay: (i * 0.1) + 's' }"
+                >
                   <span class="edu-timeline-dot" aria-hidden="true"></span>
                   <span class="edu-timeline-year">{{ x.year }}</span>
                   <h4 class="edu-timeline-role">{{ x.role }}</h4>
@@ -425,7 +453,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div class="aboutme-photo">
+        <div class="aboutme-photo reveal-scale">
           <div class="aboutme-photo-ring" aria-hidden="true"></div>
           <div class="aboutme-photo-frame">
             <img src="/img/gw.jpeg" alt="Niken Putri Maharani" class="aboutme-photo-img" />
@@ -442,15 +470,13 @@ onUnmounted(() => {
       <div class="skills-top">
       </div>
 
-      <h2 class="skills-title">My Skills</h2>
+      <h2 class="skills-title reveal">My Skills</h2>
 
-      <div class="orbit-wrap">
+      <div class="orbit-wrap reveal-scale" style="transition-delay: 0.1s">
         <div class="orbit-track"></div>
 
         <div class="orbit-core">
           <div class="orbit-core-glow" aria-hidden="true"></div>
-          <div class="orbit-core-ring" aria-hidden="true"></div>
-          <div class="orbit-core-frame">
             <img
               class="orbit-core-img"
               src="/img/skills/reactor.png"
@@ -461,7 +487,7 @@ onUnmounted(() => {
               <span>NM</span>
               <span>My Stack</span>
             </div>
-          </div>
+
         </div>
 
         <div
@@ -474,7 +500,7 @@ onUnmounted(() => {
             transform: `rotate(${item.angle}deg)`
           }"
         >
-          <div class="orbit-arm">
+          <div class="orbit-arm" :style="{ '--enter-delay': item.enterDelay + 's' }">
             <div
               class="orbit-counter"
               :style="{
@@ -504,15 +530,14 @@ onUnmounted(() => {
     <section class="projects" id="potatoes">
       <div class="glow glow--tertiary" aria-hidden="true"></div>
 
-      <div class="section-top">
-        <span class="eyebrow">Selected</span>
-        <span class="eyebrow">Potatoes</span>
+      <div class="section-top reveal">
+        <span class="eyebrow">There's my big baby potatos stuff</span>
         <span class="eyebrow eyebrow--right">2024 — 2026</span>
       </div>
 
-      <h2 class="projects-title">My Big Potatoes</h2>
+      <h2 class="projects-title reveal" style="transition-delay: 0.08s">My Big Potatoes</h2>
 
-      <div class="stuff-tabbar">
+      <div class="stuff-tabbar reveal" style="transition-delay: 0.16s">
         <button
           v-for="tab in stuffTabs"
           :key="tab.id"
@@ -530,7 +555,12 @@ onUnmounted(() => {
 
       <transition name="stuff-fade" mode="out-in">
         <div v-if="activeStuffTab === 'projects'" key="projects" class="stuff-grid">
-          <article v-for="p in stuffProjects" :key="p.title" class="stuff-card">
+          <article
+            v-for="(p, i) in stuffProjects"
+            :key="p.title + i"
+            class="stuff-card stuff-pop"
+            :style="{ animationDelay: (i % 6) * 0.06 + 's' }"
+          >
             <button
               class="stuff-card-image"
               type="button"
@@ -557,7 +587,12 @@ onUnmounted(() => {
         </div>
 
         <div v-else-if="activeStuffTab === 'certificates'" key="certificates" class="stuff-grid">
-          <article v-for="c in stuffCertificates" :key="c.title" class="stuff-card stuff-card--cert">
+          <article
+            v-for="(c, i) in stuffCertificates"
+            :key="c.issuer + i"
+            class="stuff-card stuff-card--cert stuff-pop"
+            :style="{ animationDelay: (i % 6) * 0.06 + 's' }"
+          >
             <button
               class="stuff-card-image stuff-card-image--cert"
               type="button"
@@ -579,7 +614,12 @@ onUnmounted(() => {
         </div>
 
         <div v-else key="techstack" class="stuff-grid stuff-grid--tech">
-          <article v-for="t in stuffTechStack" :key="t.name" class="stuff-chip">
+          <article
+            v-for="(t, i) in stuffTechStack"
+            :key="t.name"
+            class="stuff-chip stuff-pop"
+            :style="{ animationDelay: (i % 6) * 0.05 + 's' }"
+          >
             <span class="stuff-chip-name">{{ t.name }}</span>
             <span class="stuff-chip-category">{{ t.category }}</span>
           </article>
@@ -589,14 +629,14 @@ onUnmounted(() => {
 
     <section class="contact" id="contact">
       <div class="glow glow--secondary" aria-hidden="true"></div>
-      <span class="eyebrow">Let's Work</span>
-      <h2 class="contact-title">
+      <span class="eyebrow reveal">Let's Work</span>
+      <h2 class="contact-title reveal" style="transition-delay: 0.08s">
         Got a project in mind?<br />
         <span class="contact-title-outline">Let's talk.</span>
       </h2>
-      <a href="mailto:hello@example.com" class="contact-email">ikeenn158@gmail.com</a>
+      <a href="mailto:hello@example.com" class="contact-email reveal" style="transition-delay: 0.16s">ikeenn158@gmail.com</a>
 
-      <div class="contact-links">
+      <div class="contact-links reveal" style="transition-delay: 0.24s">
         <a href="#" class="contact-link">LinkedIn</a>
         <a href="#" class="contact-link">GitHub</a>
         <a href="#" class="contact-link">Instagram</a>
@@ -640,6 +680,70 @@ onUnmounted(() => {
   color: #f5efe6;
   font-family: 'Manrope', sans-serif;
   overflow: hidden;
+  max-width: 100vw;
+}
+
+/* ============================================================
+   SCROLL REVEAL — fun springy pop-in as sections enter view
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.82) translateY(16px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Cards inside the "Big Potatoes" tabs are destroyed/recreated on every tab
+   switch, so they get their own self-playing entrance animation instead of
+   the scroll IntersectionObserver — avoids fighting with the tab's own fade
+   transition. */
+@keyframes stuffPop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stuff-pop {
+  animation: stuffPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stuff-pop {
+    animation: none;
+  }
 }
 
 /* ============================================================
@@ -958,26 +1062,32 @@ onUnmounted(() => {
 }
 
 .swing-char.is-entering {
-  animation: dropIn 1.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: dropIn 1.05s cubic-bezier(0.34, 1.42, 0.4, 1) both;
 }
 
 .swing-char.is-entering .web-line {
-  animation: webStretch 1.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: webStretch 1.05s cubic-bezier(0.34, 1.42, 0.4, 1) both;
+}
+
+.swing-char.is-entering .char-img {
+  animation: charFadeIn 0.5s ease-out both;
+  animation-delay: 0.15s;
 }
 
 @keyframes dropIn {
-  0% { transform: translateY(-280px) rotate(0deg); }
-  55% { transform: translateY(14px) rotate(-8deg); }
-  75% { transform: translateY(-8px) rotate(5deg); }
-  90% { transform: translateY(4px) rotate(-10deg); }
+  0%   { transform: translateY(-240px) rotate(-10deg); }
   100% { transform: translateY(0) rotate(-10deg); }
 }
 
 @keyframes webStretch {
-  0% { transform: scaleY(0); opacity: 0; }
-  55% { transform: scaleY(1.18); opacity: 1; }
-  75% { transform: scaleY(0.9); }
-  100% { transform: scaleY(1); }
+  0%   { transform: scaleY(0); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes charFadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 @media (max-width: 900px) {
@@ -1047,7 +1157,7 @@ onUnmounted(() => {
   display: block;
   font-family: 'Bodoni Moda', serif;
   font-weight: 600;
-  font-size: 100px;
+  font-size: clamp(38px, 10vw, 100px);
   color: transparent;
   -webkit-text-stroke: 1.5px #f5efe6;
   letter-spacing: -0.01em;
@@ -1437,7 +1547,7 @@ onUnmounted(() => {
   position: absolute;
   inset: -30%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(179, 18, 23, 0.55) 0%, rgba(179, 18, 23, 0.12) 45%, rgba(179, 18, 23, 0) 72%);
+  background: radial-gradient(circle, rgba(18, 61, 179, 0.55) 0%, rgba(18, 90, 179, 0.12) 45%, rgba(18, 56, 179, 0) 72%);
   animation: corePulse 3.2s ease-in-out infinite;
 }
 
@@ -1527,6 +1637,33 @@ onUnmounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  --orbit-radius: 160px;
+  opacity: 0;
+}
+
+.orbit-wrap.is-visible .orbit-arm {
+  animation: orbitArmEnter 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+
+@keyframes orbitArmEnter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(var(--orbit-radius)) scale(0.15);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .orbit-arm {
+    --orbit-radius: 95px;
+  }
 }
 
 .orbit-counter {
@@ -1668,8 +1805,13 @@ onUnmounted(() => {
   .orbit-pivot,
   .orbit-counter,
   .orbit-core-ring,
-  .orbit-core-glow {
+  .orbit-core-glow,
+  .orbit-arm {
     animation: none !important;
+  }
+
+  .orbit-arm {
+    opacity: 1;
   }
 }
 
@@ -2345,6 +2487,64 @@ onUnmounted(() => {
   .stuff-tab {
     padding: 12px 12px;
     font-size: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero,
+  .aboutme,
+  .skills {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .projects,
+  .contact,
+  .site-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero-title-label {
+    font-size: 15px;
+  }
+
+  .hero-title-line {
+    letter-spacing: 0.14em;
+  }
+
+  .aboutme-photo-frame {
+    width: 160px;
+  }
+
+  .aboutme-facts {
+    gap: 24px;
+  }
+
+  .orbit-counter {
+    width: 68px;
+  }
+
+  .orbit-badge {
+    width: 40px;
+    height: 40px;
+  }
+
+  .orbit-name {
+    font-size: 10px;
+  }
+
+  .orbit-meta {
+    font-size: 8px;
+  }
+
+  .stuff-tab {
+    font-size: 9px;
+    padding: 10px 8px;
+  }
+
+  .contact-email {
+    font-size: 17px;
   }
 }
 </style>
