@@ -153,46 +153,40 @@ const stuffTabs = [
 
 const stuffProjects = ref([
   {
-    title: 'foto',
-    tags: 'HTML . CSS . Javascript',
-    desc: 'Project untuk kompetisi LCGN pertama, dibangun pakai HTML, CSS, dan JavaScript.',
-    img: '/img/projects/lcgn-1.png',
-  },
+    title: 'Verdant Awakening',
+    tags: 'HTML, CSS, JavaScript',
+    desc: 'Project untuk kompetisi LCGN pertama, dibangun menggunakan basic stack HTML, CSS, dan JavaScript.',
+    img: '/img/project/game1.jpeg',
+      },
   {
-    title: 'foto',
-    tags: 'Laravel . Xampp . Tailwind',
-    desc: 'Tugas kelompok berbasis Laravel dengan styling Tailwind CSS.',
-    img: '/img/projects/tugas-kelompok-1.png',
-  },
-  {
-    title: 'foto',
-    tags: 'HTML . CSS . Javascript',
-    desc: 'Iterasi kedua project LCGN dengan perbaikan UI dan fitur.',
-    img: '/img/projects/lcgn-2.png',
-  },
-  {
-    title: 'foto',
+    title: 'Libranova',
     tags: 'Laravel . Docker',
-    desc: 'Project individu menggunakan Laravel yang di-deploy dengan Docker.',
-    img: '/img/projects/tugas-individu.png',
+    desc: 'Tugas individu Aplikasi web manajemen perpustakaan yang terintegrasi dengan containerization Docker untuk kemudahan setup dan deployment',
+    img: '/img/project/tugas1.jpeg',
   },
   {
-    title: 'foto',
+    title: 'LCGN 2',
+    tags: 'HTML . CSS . Javascript',
+    desc: 'Project untuk kompetisi LCGN kedua, dibangun menggunakan basic stack HTML, CSS, dan JavaScript.',
+    img: '/img/project/lcgn.jpeg',
+  },
+  {
+    title: 'Van Aroma Visitor',
     tags: 'Laravel . Docker',
     desc: 'Sistem manajemen kunjungan tamu untuk PT. Van Aroma.',
-    img: '/img/projects/van-aroma-visitor.png',
+    img: '/img/project/va1.jpeg',
   },
   {
-    title: 'foto',
+    title: 'Van Aroma Security',
     tags: 'Laravel . Docker . Nuxt',
     desc: 'Sistem keamanan internal untuk kebutuhan operasional Van Aroma.',
-    img: '/img/projects/van-aroma-security.png',
+    img: '/img/project/va2.jpeg',
   },
   {
-    title: 'foto',
+    title: 'Van Aroma Job Portal',
     tags: 'Laravel . Docker . Nuxt . Tailwind',
     desc: 'Portal lowongan kerja internal untuk PT. Van Aroma.',
-    img: '/img/projects/van-aroma-job-portal.png',
+    img: '/img/project/va3.jpeg',
   },
 ])
 
@@ -380,7 +374,7 @@ onUnmounted(() => {
         <span class="hero-title-label">Not a genius, billionare, playgirl, philantropist <br> but definitely a knowledge seeker</span>
         <span class="hero-title-outline">Hi! i'm Niken</span>
         <span class="hero-title-outline">Maharani</span>
-        <span class="hero-title-line">Junior Web Developer & Tech enthusiast</span>
+        <span class="hero-title-line">Welcome to my paradise</span>
       </h1>
 
       <div class="hero-info">
