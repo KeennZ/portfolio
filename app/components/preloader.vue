@@ -6,43 +6,46 @@
 
       <div class="web-container">
         <div class="web-rotation">
-          <svg
-            class="web-svg"
-            viewBox="0 0 1000 1000"
-            preserveAspectRatio="xMidYMid slice"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <g class="radiating-lines">
-              <line
-                v-for="(line, index) in spokeLines"
-                :key="'spoke-' + index"
-                :x1="line.x1"
-                :y1="line.y1"
-                :x2="line.x2"
-                :y2="line.y2"
-                class="web-line"
-                :style="{
-                  '--delay': `${index * 0.045}s`
-                }"
-              />
-            </g>
+          <div class="web-scale">
+            <svg
+              class="web-svg"
+              viewBox="0 0 1000 1000"
+              preserveAspectRatio="xMidYMid slice"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g class="radiating-lines">
+                <line
+                  v-for="(line, index) in spokeLines"
+                  :key="'spoke-' + index"
+                  :x1="line.x1"
+                  :y1="line.y1"
+                  :x2="line.x2"
+                  :y2="line.y2"
+                  class="web-line"
+                  :style="{
+                    '--delay': `${index * 0.045}s`
+                  }"
+                />
+              </g>
 
-            <g class="web-rings">
-              <path
-                v-for="(dPath, index) in ringPaths"
-                :key="'ring-' + index"
-                :d="dPath"
-                class="ring-path"
-                :class="{
-                  active: progress > (index + 1) * 10
-                }"
-              />
-            </g>
-          </svg>
+              <g class="web-rings">
+                <path
+                  v-for="(dPath, index) in ringPaths"
+                  :key="'ring-' + index"
+                  :d="dPath"
+                  class="ring-path"
+                  :class="{
+                    active: progress > (index + 1) * 10
+                  }"
+                />
+              </g>
+            </svg>
 
-          <div class="core-ring">
-            <div class="core-inner">
-              <div class="core-dot"></div>
+            <div class="core-ring">
+              <div class="core-inner">
+                <div class="core-dot"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -61,20 +64,7 @@
         </div>
       </div>
 
-      <div
-        class="text-content"
-        :class="{
-          visible: progress > 35
-        }"
-      >
-        <h1 class="heading-text">
-          welcome to my
-        </h1>
 
-        <h1 class="heading-text bold">
-          portfolio website
-        </h1>
-      </div>
     </div>
   </Transition>
 </template>
@@ -296,7 +286,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Space+Grotesk:wght@400;500;600&display=swap');
+@import url('https://googleapis.com');
 
 .preloader-overlay {
   position: fixed;
@@ -397,7 +387,8 @@ onBeforeUnmount(() => {
       ),
       transparent 70%
     );
-  filter: blur(55px);
+  filter:
+    blur(55px);
   animation:
     ambientPulse
     3s
@@ -428,7 +419,6 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1200px;
   pointer-events: none;
 }
 
@@ -443,59 +433,95 @@ onBeforeUnmount(() => {
   transform-origin: center;
   will-change:
     transform,
-    opacity,
-    filter;
+    opacity;
   animation:
-    webEntrance
+    webRotate
     3.4s
     cubic-bezier(
-      0.22,
+      0.16,
       1,
-      0.36,
+      0.3,
       1
     )
     forwards;
 }
 
-@keyframes webEntrance {
+.web-scale {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  will-change:
+    transform,
+    filter;
+  animation:
+    webScale
+    3.4s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    forwards;
+}
+
+@keyframes webRotate {
   0% {
     transform:
-      scale(0.7)
-      rotate(-55deg);
+      rotate(-120deg);
     opacity: 0;
-    filter: blur(10px);
   }
 
-  25% {
-    transform:
-      scale(0.78)
-      rotate(-38deg);
-    opacity: 0.35;
-    filter: blur(7px);
+  20% {
+    opacity: 0.25;
   }
 
-  50% {
-    transform:
-      scale(0.87)
-      rotate(-22deg);
-    opacity: 0.6;
-    filter: blur(4px);
+  45% {
+    opacity: 0.5;
   }
 
-  75% {
-    transform:
-      scale(0.95)
-      rotate(-9deg);
-    opacity: 0.85;
-    filter: blur(1.5px);
+  70% {
+    opacity: 0.8;
   }
 
   100% {
     transform:
-      scale(1)
       rotate(0deg);
     opacity: 1;
-    filter: blur(0);
+  }
+}
+
+@keyframes webScale {
+  0% {
+    transform:
+      scale(0.72);
+    filter:
+      blur(10px);
+  }
+
+  30% {
+    transform:
+      scale(0.8);
+    filter:
+      blur(5px);
+  }
+
+  65% {
+    transform:
+      scale(0.92);
+    filter:
+      blur(1.5px);
+  }
+
+  100% {
+    transform:
+      scale(1);
+    filter:
+      blur(0);
   }
 }
 
@@ -865,6 +891,74 @@ onBeforeUnmount(() => {
     ease;
 }
 
+.brand-name {
+  position: absolute;
+  z-index: 10;
+
+  top: 70%;
+  left: 51%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.92);
+
+  opacity: 0;
+
+  font-family: 'Rajdhani', sans-serif;
+
+  font-size:
+    clamp(
+      4rem,
+      10vw,
+      8rem
+    );
+
+  letter-spacing:
+    0.18em;
+
+  color:
+    #ffffff;
+
+  text-shadow:
+    0 0 12px
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    ),
+
+    0 0 30px
+    rgba(
+      255,
+      35,
+      60,
+      0.45
+    );
+
+  transition:
+    opacity
+    1s
+    ease,
+
+    transform
+    1.2s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    );
+}
+
+.brand-name.visible {
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+}
+
 .text-content.visible {
   opacity: 1;
   transform:
@@ -1001,4 +1095,4 @@ onBeforeUnmount(() => {
   }
 }
 
-</style>
+</style> 
