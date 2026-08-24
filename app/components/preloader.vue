@@ -3,9 +3,9 @@
     <div v-if="isLoading" class="preloader-overlay">
       <div class="grid-background"></div>
       <div class="ambient-glow"></div>
+
       <div class="web-container">
         <div class="web-rotation">
-
           <svg
             class="web-svg"
             viewBox="0 0 1000 1000"
@@ -52,7 +52,8 @@
           class="mask-eyes"
           :class="{
             active: progress > 45
-          }">
+          }"
+        >
           <img
             src="/img/eyes.png"
             class="eyes-image"
@@ -90,6 +91,7 @@ import {
 const progress = ref(0)
 const isLoading = ref(true)
 const emit = defineEmits(['loaded'])
+
 const spokesCount = 12
 const ringsCount = 5
 const center = 500
@@ -100,7 +102,6 @@ let startTime = null
 
 const spokeLines = computed(() => {
   const lines = []
-
   const maxRadius = 900
 
   for (let i = 0; i < spokesCount; i++) {
@@ -108,17 +109,17 @@ const spokeLines = computed(() => {
       (
         i * 360 / spokesCount
       ) *
-      (Math.PI / 180)
+      (
+        Math.PI / 180
+      )
 
     lines.push({
       x1: center,
       y1: center,
-
       x2:
         center +
         maxRadius *
         Math.cos(angle),
-
       y2:
         center +
         maxRadius *
@@ -131,7 +132,6 @@ const spokeLines = computed(() => {
 
 const ringPaths = computed(() => {
   const paths = []
-
   const ringSpacing = 105
   const startingRadius = 90
 
@@ -155,7 +155,9 @@ const ringPaths = computed(() => {
         (
           i * 360 / spokesCount
         ) *
-        (Math.PI / 180)
+        (
+          Math.PI / 180
+        )
 
       const angle2 =
         (
@@ -163,7 +165,9 @@ const ringPaths = computed(() => {
           360 /
           spokesCount
         ) *
-        (Math.PI / 180)
+        (
+          Math.PI / 180
+        )
 
       const midAngle =
         (
@@ -171,7 +175,9 @@ const ringPaths = computed(() => {
           360 /
           spokesCount
         ) *
-        (Math.PI / 180)
+        (
+          Math.PI / 180
+        )
 
       const x1 =
         center +
@@ -224,18 +230,14 @@ const ringPaths = computed(() => {
     }
 
     d += ' Z'
-
     paths.push(d)
   }
 
   return paths
 })
 
-const easeOutExpo = (t) => {
-  return t === 1
-    ? 1
-    : 1 -
-      Math.pow(2, -10 * t)
+const easeOutCubic = (t) => {
+  return 1 - Math.pow(1 - t, 3)
 }
 
 const animateLoader = (timestamp) => {
@@ -253,7 +255,9 @@ const animateLoader = (timestamp) => {
     )
 
   const easedProgress =
-    easeOutExpo(rawProgress)
+    easeOutCubic(
+      rawProgress
+    )
 
   progress.value =
     easedProgress * 100
@@ -298,18 +302,13 @@ onBeforeUnmount(() => {
 .preloader-overlay {
   position: fixed;
   inset: 0;
-
   width: 100vw;
   height: 100vh;
-
   z-index: 99999;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
-
   background:
     radial-gradient(
       circle at center,
@@ -322,7 +321,6 @@ onBeforeUnmount(() => {
       transparent 45%
     ),
     #0c0204;
-
   font-family:
     'Space Grotesk',
     sans-serif;
@@ -331,10 +329,8 @@ onBeforeUnmount(() => {
 .grid-background {
   position: absolute;
   inset: -20%;
-
   width: 140%;
   height: 140%;
-
   background-image:
     linear-gradient(
       to right,
@@ -356,21 +352,14 @@ onBeforeUnmount(() => {
       ) 1px,
       transparent 1px
     );
-
-  background-size:
-    80px 80px;
-
+  background-size: 80px 80px;
   transform:
     perspective(900px)
     rotateX(60deg)
     scale(1.8);
-
   transform-origin:
     center bottom;
-
-  opacity:
-    0.4;
-
+  opacity: 0.4;
   animation:
     gridMove
     12s
@@ -392,16 +381,12 @@ onBeforeUnmount(() => {
   }
 }
 
-
 .ambient-glow {
   position: absolute;
-
   width: 70vw;
   height: 70vw;
-
   max-width: 950px;
   max-height: 950px;
-
   background:
     radial-gradient(
       circle,
@@ -413,10 +398,7 @@ onBeforeUnmount(() => {
       ),
       transparent 70%
     );
-
-  filter:
-    blur(55px);
-
+  filter: blur(55px);
   animation:
     ambientPulse
     3s
@@ -428,142 +410,109 @@ onBeforeUnmount(() => {
   0%,
   100% {
     transform:
-      scale(0.92);
-
-    opacity:
-      0.45;
+      scale(0.96);
+    opacity: 0.45;
   }
 
   50% {
     transform:
-      scale(1.08);
-
-    opacity:
-      0.8;
+      scale(1.04);
+    opacity: 0.75;
   }
 }
 
 .web-container {
   position: absolute;
   inset: 0;
-
   width: 100vw;
   height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  perspective:
-    1200px;
-
-  pointer-events:
-    none;
+  perspective: 1200px;
+  pointer-events: none;
 }
 
 .web-rotation {
   position: absolute;
-
   inset: -10%;
-
   width: 120%;
   height: 120%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  transform-origin:
-    center;
-
+  transform-origin: center;
+  will-change:
+    transform,
+    opacity,
+    filter;
   animation:
     webEntrance
     3.4s
     cubic-bezier(
-      0.16,
+      0.22,
       1,
-      0.3,
+      0.36,
       1
     )
     forwards;
 }
 
 @keyframes webEntrance {
-
   0% {
     transform:
-      scale(0.08)
+      scale(0.7)
       rotate(-55deg);
-
-    opacity:
-      0;
-
-    filter:
-      blur(14px);
+    opacity: 0;
+    filter: blur(10px);
   }
 
-  20% {
-    opacity:
-      0.7;
-  }
-
-  55% {
+  25% {
     transform:
-      scale(0.92)
-      rotate(8deg);
+      scale(0.78)
+      rotate(-38deg);
+    opacity: 0.35;
+    filter: blur(7px);
+  }
 
-    filter:
-      blur(1px);
+  50% {
+    transform:
+      scale(0.87)
+      rotate(-22deg);
+    opacity: 0.6;
+    filter: blur(4px);
   }
 
   75% {
     transform:
-      scale(1.035)
-      rotate(-2deg);
-
-    filter:
-      blur(0);
+      scale(0.95)
+      rotate(-9deg);
+    opacity: 0.85;
+    filter: blur(1.5px);
   }
 
   100% {
     transform:
       scale(1)
       rotate(0deg);
-
-    opacity:
-      1;
-
-    filter:
-      blur(0);
+    opacity: 1;
+    filter: blur(0);
   }
 }
 
 .web-svg {
   width: 100%;
   height: 100%;
-
   display: block;
-
-  overflow:
-    visible;
+  overflow: visible;
 }
 
 .web-line {
-  stroke:
-    #ff233c;
-
-  stroke-width:
-    1.15;
-
-  opacity:
-    0;
-
-  stroke-dasharray:
-    1400;
-
-  stroke-dashoffset:
-    1400;
-
+  stroke: #ff233c;
+  stroke-width: 1.15;
+  opacity: 0;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
   filter:
     drop-shadow(
       0 0 5px
@@ -574,7 +523,6 @@ onBeforeUnmount(() => {
         0.7
       )
     );
-
   animation:
     drawSpoke
     1.15s
@@ -585,56 +533,36 @@ onBeforeUnmount(() => {
       1
     )
     forwards;
-
   animation-delay:
     calc(
       0.35s +
       var(--delay)
     );
 }
+
 @keyframes drawSpoke {
-
   from {
-    stroke-dashoffset:
-      1400;
-
-    opacity:
-      0;
+    stroke-dashoffset: 1400;
+    opacity: 0;
   }
 
   30% {
-    opacity:
-      0.75;
+    opacity: 0.75;
   }
 
   to {
-    stroke-dashoffset:
-      0;
-
-    opacity:
-      0.32;
+    stroke-dashoffset: 0;
+    opacity: 0.32;
   }
 }
 
 .ring-path {
-  stroke:
-    #ff233c;
-
-  stroke-width:
-    1.7;
-
-  fill:
-    none;
-
-  opacity:
-    0;
-
-  transform:
-    scale(0.68);
-
-  transform-origin:
-    500px 500px;
-
+  stroke: #ff233c;
+  stroke-width: 1.7;
+  fill: none;
+  opacity: 0;
+  transform: scale(0.68);
+  transform-origin: 500px 500px;
   filter:
     drop-shadow(
       0 0 6px
@@ -645,12 +573,10 @@ onBeforeUnmount(() => {
         0.7
       )
     );
-
   transition:
     opacity
     0.55s
     ease,
-
     transform
     0.95s
     cubic-bezier(
@@ -662,31 +588,21 @@ onBeforeUnmount(() => {
 }
 
 .ring-path.active {
-  opacity:
-    1;
-
-  transform:
-    scale(1);
+  opacity: 1;
+  transform: scale(1);
 }
 
 .core-ring {
   position: absolute;
-
   top: 50%;
   left: 50%;
-
-  width:
-    105px;
-
-  height:
-    105px;
-
+  width: 105px;
+  height: 105px;
   transform:
     translate(
       -50%,
       -50%
     );
-
   border:
     1px solid
     rgba(
@@ -695,10 +611,7 @@ onBeforeUnmount(() => {
       60,
       0.45
     );
-
-  border-radius:
-    50%;
-
+  border-radius: 50%;
   box-shadow:
     0 0 25px
     rgba(
@@ -707,7 +620,6 @@ onBeforeUnmount(() => {
       60,
       0.23
     ),
-
     inset
     0 0 25px
     rgba(
@@ -716,16 +628,14 @@ onBeforeUnmount(() => {
       60,
       0.1
     );
-
   animation:
     coreRotate
-    6s
+    8s
     linear
     infinite;
 }
 
 @keyframes coreRotate {
-
   from {
     transform:
       translate(
@@ -747,10 +657,7 @@ onBeforeUnmount(() => {
 
 .core-inner {
   position: absolute;
-
-  inset:
-    15px;
-
+  inset: 15px;
   border:
     1px dashed
     rgba(
@@ -759,20 +666,15 @@ onBeforeUnmount(() => {
       60,
       0.3
     );
-
-  border-radius:
-    50%;
-
+  border-radius: 50%;
   animation:
     coreReverse
-    4s
+    6s
     linear
     infinite;
 }
 
-
 @keyframes coreReverse {
-
   from {
     transform:
       rotate(0deg);
@@ -784,105 +686,42 @@ onBeforeUnmount(() => {
   }
 }
 
-
 .core-dot {
   position: absolute;
-
-  top:
-    50%;
-
-  left:
-    50%;
-
-  width:
-    7px;
-
-  height:
-    7px;
-
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
   transform:
     translate(
       -50%,
       -50%
     );
-
-  border-radius:
-    50%;
-
-  background:
-    #ffffff;
-
+  border-radius: 50%;
+  background: #ffffff;
   box-shadow:
-    0 0 8px
-      #ffffff,
-
-    0 0 20px
-      #ff233c,
-
-    0 0 45px
-      #ff233c;
-
-  animation:
-    corePulse
-    1.4s
-    ease-in-out
-    infinite;
+    0 0 8px #ffffff,
+    0 0 20px #ff233c,
+    0 0 45px #ff233c;
 }
-
-
-@keyframes corePulse {
-
-  0%,
-  100% {
-    transform:
-      translate(
-        -50%,
-        -50%
-      )
-      scale(0.8);
-  }
-
-  50% {
-    transform:
-      translate(
-        -50%,
-        -50%
-      )
-      scale(1.4);
-  }
-}
-
 
 .mask-eyes {
   position: absolute;
-
-  top:
-    50%;
-
-  left:
-    50%;
-
-  z-index:
-    5;
-
+  top: 50%;
+  left: 50%;
+  z-index: 5;
   transform:
     translate(
       -50%,
       -50%
     )
     scale(0.55);
-
-  opacity:
-    0;
-
-  filter:
-    blur(8px);
-
+  opacity: 0;
+  filter: blur(8px);
   transition:
     opacity
     1s
     ease,
-
     transform
     1.15s
     cubic-bezier(
@@ -891,148 +730,120 @@ onBeforeUnmount(() => {
       0.3,
       1
     ),
-
     filter
     1s
     ease;
 }
 
 .mask-eyes.active {
-  opacity:
-    0.9;
-
+  opacity: 0.9;
   transform:
     translate(
       -50%,
       -50%
     )
     scale(1);
-
-  filter:
-    blur(0);
+  filter: blur(0);
 }
 
-
 .eyes-image {
-
   width:
     clamp(
       180px,
       28vw,
       420px
     );
-
-  height:
-    auto;
-
-  display:
-    block;
-
-  object-fit:
-    contain;
-
-  opacity:
-    0.9;
-
-filter:
-  drop-shadow(
-    0 0 5px
-    rgba(255, 255, 255, 0.25)
-  )
-  drop-shadow(
-    0 0 25px
-    rgba(255, 35, 60, 0.8)
-  );
-
+  height: auto;
+  display: block;
+  object-fit: contain;
+  opacity: 0.9;
+  will-change:
+    filter,
+    opacity;
+  filter:
+    drop-shadow(
+      0 0 5px
+      rgba(
+        255,
+        255,
+        255,
+        0.25
+      )
+    )
+    drop-shadow(
+      0 0 25px
+      rgba(
+        255,
+        35,
+        60,
+        0.8
+      )
+    );
   animation:
-    eyesPulse
-    2.4s
+    eyesGlow
+    3s
     ease-in-out
     infinite;
 }
 
-@keyframes eyesPulse {
-
+@keyframes eyesGlow {
   0%,
   100% {
-    opacity:
-      0.75;
-
-    transform:
-      scale(0.97);
-
+    opacity: 0.72;
     filter:
       drop-shadow(
-        0 0 8px
+        0 0 4px
         rgba(
           255,
           255,
           255,
-          0.55
+          0.2
         )
       )
-
       drop-shadow(
-        0 0 18px
+        0 0 20px
         rgba(
           255,
           35,
           60,
-          0.5
+          0.55
         )
       );
   }
 
   50% {
-    opacity:
-      1;
-
-    transform:
-      scale(1.03);
-
+    opacity: 0.95;
     filter:
       drop-shadow(
-        0 0 15px
+        0 0 7px
         rgba(
           255,
           255,
           255,
-          0.95
+          0.35
         )
       )
-
       drop-shadow(
-        0 0 35px
+        0 0 28px
         rgba(
           255,
           35,
           60,
-          0.9
+          0.8
         )
       );
   }
 }
 
 .text-content {
-  position:
-    relative;
-
-  z-index:
-    10;
-
-  text-align:
-    center;
-
-  opacity:
-    0;
-
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  opacity: 0;
   transform:
     translateY(28px)
     scale(0.96);
-
-  filter:
-    blur(10px);
-
+  filter: blur(10px);
   transition:
     opacity
     1s
@@ -1042,7 +853,6 @@ filter:
       0.3,
       1
     ),
-
     transform
     1.15s
     cubic-bezier(
@@ -1051,42 +861,33 @@ filter:
       0.3,
       1
     ),
-
     filter
     1s
     ease;
 }
 
 .text-content.visible {
-  opacity:
-    1;
-
+  opacity: 1;
   transform:
     translateY(0)
     scale(1);
-
-  filter:
-    blur(0);
+  filter: blur(0);
 }
 
 .heading-text {
-  font-family: 'Bangers', cursive;
-
+  font-family:
+    'Bangers',
+    cursive;
   font-size:
     clamp(
       2rem,
       5.2vw,
       5rem
     );
-
   font-weight: 400;
-
   line-height: 1.08;
-
   letter-spacing: 0.08em;
-
   color: transparent;
-
   -webkit-text-stroke:
     1px
     rgba(
@@ -1098,13 +899,10 @@ filter:
 }
 
 .heading-text.bold {
-  font-weight:
-    600;
-
+  font-weight: 600;
   -webkit-text-stroke:
     1.2px
     #ffffff;
-
   text-shadow:
     0 0 15px
     rgba(
@@ -1113,7 +911,6 @@ filter:
       255,
       0.12
     ),
-
     0 0 30px
     rgba(
       255,
@@ -1135,14 +932,11 @@ filter:
     );
 }
 
-
 .fade-leave-to {
-  opacity:
-    0;
+  opacity: 0;
 }
 
 @media (max-width: 1024px) {
-
   .heading-text {
     font-size:
       clamp(
@@ -1151,15 +945,20 @@ filter:
         4rem
       );
   }
-
 }
+
 @media (max-width: 768px) {
+  .web-rotation {
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+  }
 
   .grid-background {
     background-size:
-      55px 55px;
+      55px
+      55px;
   }
-
 
   .heading-text {
     font-size:
@@ -1168,11 +967,9 @@ filter:
         8vw,
         3rem
       );
-
     letter-spacing:
       0.04em;
   }
-
 
   .eyes-image {
     width:
@@ -1183,22 +980,26 @@ filter:
       );
   }
 
-
   .hud-status {
-    right:
-      16px;
-
-    bottom:
-      16px;
-
-    font-size:
-      0.54rem;
-
-    letter-spacing:
-      0.1em;
+    right: 16px;
+    bottom: 16px;
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
   }
-
 }
 
+@media (max-width: 480px) {
+  .heading-text {
+    font-size: 1.65rem;
+  }
+
+  .eyes-image {
+    width: 170px;
+  }
+
+  .hud-status {
+    max-width: 90vw;
+  }
+}
 
 </style>
