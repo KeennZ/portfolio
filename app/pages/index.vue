@@ -192,7 +192,7 @@ const stuffProjects = ref([
 
 const stuffCertificates = ref([
   { title: '', issuer: 'Komdigi', year: '2026', img: '/img/sertif/digi.jpg' },
-  { title: '', issuer: 'Clevio Camp', year: '2026', img: '/img/sertif/lcgn2.jpg' },
+  { title: '', issuer: 'Clevio Camp', year: '2026', img: '/img/sertif/lcgn2.jpeg' },
   { title: '', issuer: 'Dicoding', year: '2025', img: '/img/sertif/coding1.png' },
   { title: '', issuer: 'Clevio Camp', year: '2025', img: '/img/sertif/lcgn1.png' },
   { title: '', issuer: 'Dicoding', year: '2025', img: '/img/sertif/coding2.png' },
