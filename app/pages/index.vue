@@ -628,18 +628,24 @@ onUnmounted(() => {
         Got a project in mind?<br />
         <span class="contact-title-outline">Let's talk.</span>
       </h2>
-      <a href="mailto:hello@example.com" class="contact-email reveal" style="transition-delay: 0.16s">ikeenn158@gmail.com</a>
+      <a
+        href="mailto:ikeenn158@gmail.com?subject=Project%20Inquiry%20for%20Niken&body=Hi%20Niken%2C%0A%0AI'm%20interested%20in%20working%20with%20you%20on%20a%20project.%0A%0AProject%20details%3A%0A-%20Project%3A%0A-%20Timeline%3A%0A-%20Budget%3A%0A%0ALooking%20forward%20to%20hearing%20from%20you!"
+        class="contact-email reveal"
+        style="transition-delay: 0.16s"
+      >
+        ikeenn158@gmail.com
+      </a>
 
       <div class="contact-links reveal" style="transition-delay: 0.24s">
-        <a href="#" class="contact-link">LinkedIn</a>
-        <a href="#" class="contact-link">GitHub</a>
-        <a href="#" class="contact-link">Instagram</a>
+        <a href="https://linkedin.com/in/niken-putri-maharani-5bb957318/" class="contact-link">LinkedIn</a>
+        <a href="https://github.com/KeennZ" class="contact-link">GitHub</a>
+        <a href="https://instagram.com/oceannblvv" class="contact-link">Instagram</a>
       </div>
     </section>
 
     <footer class="site-footer">
-      <span class="footer-name">Niken Putri Maharani</span>
-      <span class="footer-copy">© 2026 — U </span>
+      <span class="footer-name">Kenn Romanoff</span>
+      <span class="footer-copy">© 2026 — California </span>
       <a href="#" class="footer-top">Back to top ↑</a>
     </footer>
 
