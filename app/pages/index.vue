@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 useHead({
-  title: 'Personal Portfolio',
+  title: 'Kenn',
   link: [
     {
       rel: 'stylesheet',
@@ -154,39 +154,50 @@ const stuffTabs = [
 const stuffProjects = ref([
   {
     title: 'Verdant Awakening',
-    tags: 'HTML, CSS, JavaScript',
-    desc: 'Project untuk kompetisi LCGN pertama, dibangun menggunakan basic stack HTML, CSS, dan JavaScript.',
+    desc: 'Project untuk kompetisi LCGN dari Clevio Camp, dibangun menggunakan basic stack HTML, CSS, dan JavaScript dan berhasil menjadi salah satu finalis LCGN 2025. \n \n game ini mengangkat tema sustainibility dan lingkungan hidup, dimana pemain akan menjalankan beberapa tugas yang akan menginspirasi kebiasaan orang orang untuk melakukan gaya hidup berdampak terhadap keberlanjutan lingkungan.',
     img: '/img/project/game1.jpeg',
-      },
+    images: ['/img/project/game1.jpeg', '/img/project/game1a.jpeg', '/img/project/game1b.jpeg', '/img/project/game1c.jpeg', '/img/project/game1d.jpeg' , '/img/project/game1e.jpeg' , '/img/project/game1f.jpeg' , '/img/project/game1g.jpeg' , '/img/project/game1h.jpeg' ],
+    github: 'https://drive.google.com/drive/folders/1B2P-ec3CLGh-4k7L89yfUJrH2KldQwh8',
+  },
   {
     title: 'Libranova',
     tags: 'Laravel . Docker',
     desc: 'Tugas individu Aplikasi web manajemen perpustakaan yang terintegrasi dengan containerization Docker untuk kemudahan setup dan deployment',
     img: '/img/project/tugas1.jpeg',
+    images: ['/img/project/tugas1.jpeg'],
+    github: '',
   },
   {
     title: 'LCGN 2',
     tags: 'HTML . CSS . Javascript',
     desc: 'Project untuk kompetisi LCGN kedua, dibangun menggunakan basic stack HTML, CSS, dan JavaScript.',
     img: '/img/project/lcgn.jpeg',
+    images: ['/img/project/lcgn.jpeg'],
+    github: '',
   },
   {
     title: 'Van Aroma Visitor',
     tags: 'Laravel . Docker',
     desc: 'Sistem manajemen kunjungan tamu untuk PT. Van Aroma.',
     img: '/img/project/va1.jpeg',
+    images: ['/img/project/va1.jpeg'],
+    github: '',
   },
   {
     title: 'Van Aroma Security',
     tags: 'Laravel . Docker . Nuxt',
     desc: 'Sistem keamanan internal untuk kebutuhan operasional Van Aroma.',
     img: '/img/project/va2.jpeg',
+    images: ['/img/project/va2.jpeg'],
+    github: '',
   },
   {
     title: 'Van Aroma Job Portal',
     tags: 'Laravel . Docker . Nuxt . Tailwind',
     desc: 'Portal lowongan kerja internal untuk PT. Van Aroma.',
     img: '/img/project/va3.jpeg',
+    images: ['/img/project/va3.jpeg'],
+    github: '',
   },
 ])
 
@@ -217,8 +228,42 @@ function closeLightbox() {
   lightboxAlt.value = ''
 }
 
+const activeProject = ref(null)
+const galleryIndex = ref(0)
+
+function openProjectDetails(project) {
+  activeProject.value = project
+  galleryIndex.value = 0
+  document.body.style.overflow = 'hidden'
+}
+
+function closeProjectDetails() {
+  activeProject.value = null
+  galleryIndex.value = 0
+  document.body.style.overflow = ''
+}
+
+function nextGalleryImage() {
+  if (!activeProject.value) return
+  const total = activeProject.value.images.length
+  galleryIndex.value = (galleryIndex.value + 1) % total
+}
+
+function prevGalleryImage() {
+  if (!activeProject.value) return
+  const total = activeProject.value.images.length
+  galleryIndex.value = (galleryIndex.value - 1 + total) % total
+}
+
 function onLightboxKeydown(e) {
-  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'Escape') {
+    closeLightbox()
+    closeProjectDetails()
+  }
+  if (activeProject.value && activeProject.value.images.length > 1) {
+    if (e.key === 'ArrowRight') nextGalleryImage()
+    if (e.key === 'ArrowLeft') prevGalleryImage()
+  }
 }
 
 onMounted(() => {
@@ -227,6 +272,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onLightboxKeydown)
+  document.body.style.overflow = ''
 })
 
 const stuffTechStack = ref([
@@ -281,7 +327,6 @@ onUnmounted(() => {
   if (sectionObserver) sectionObserver.disconnect()
 })
 
-/* ---------- Scroll reveal (fun pop-in on scroll) ---------- */
 let revealObserver = null
 
 onMounted(() => {
@@ -572,7 +617,7 @@ onUnmounted(() => {
               <h3 class="stuff-card-title">{{ p.title }}</h3>
               <p v-if="p.desc" class="stuff-card-desc">{{ p.desc }}</p>
               <span class="stuff-card-tags">{{ p.tags }}</span>
-              <button class="stuff-card-btn" type="button">
+              <button class="stuff-card-btn" type="button" @click="openProjectDetails(p)">
                 Details
                 <span class="stuff-card-btn-arrow" aria-hidden="true">→</span>
               </button>
@@ -666,6 +711,73 @@ onUnmounted(() => {
       </div>
     </transition>
 
+    <transition name="lightbox-fade">
+      <div
+        v-if="activeProject"
+        class="project-modal-overlay"
+        @click="closeProjectDetails"
+      >
+        <div class="project-modal" @click.stop>
+          <button class="lightbox-close project-modal-close" type="button" aria-label="Tutup" @click="closeProjectDetails">✕</button>
+
+          <div class="project-modal-gallery">
+            <button
+              v-if="activeProject.images.length > 1"
+              class="project-modal-nav project-modal-nav--prev"
+              type="button"
+              aria-label="Foto sebelumnya"
+              @click="prevGalleryImage"
+            >‹</button>
+
+            <div class="project-modal-image-frame">
+              <img
+                :src="activeProject.images[galleryIndex]"
+                :alt="activeProject.title"
+                class="project-modal-img"
+                @error="handleImgError"
+              />
+            </div>
+
+            <button
+              v-if="activeProject.images.length > 1"
+              class="project-modal-nav project-modal-nav--next"
+              type="button"
+              aria-label="Foto berikutnya"
+              @click="nextGalleryImage"
+            >›</button>
+
+            <div v-if="activeProject.images.length > 1" class="project-modal-dots">
+              <span
+                v-for="(img, gi) in activeProject.images"
+                :key="gi"
+                class="project-modal-dot"
+                :class="{ 'is-active': gi === galleryIndex }"
+                @click="galleryIndex = gi"
+              ></span>
+            </div>
+          </div>
+
+          <div class="project-modal-body">
+            <div class="project-modal-header">
+              <h3 class="project-modal-title">{{ activeProject.title }}</h3>
+              <a
+                v-if="activeProject.github"
+                :href="activeProject.github"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="project-modal-github"
+              >
+                View Project
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+
+            <p class="project-modal-desc">{{ activeProject.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </transition>
+
   </div>
 </template>
 
@@ -683,9 +795,6 @@ onUnmounted(() => {
   max-width: 100vw;
 }
 
-/* ============================================================
-   SCROLL REVEAL — fun springy pop-in as sections enter view
-   ============================================================ */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
@@ -2236,6 +2345,200 @@ onUnmounted(() => {
 .stuff-card:hover .stuff-card-arrow {
   transform: translate(4px, -4px);
   color: #b31217;
+}
+
+/* ---------- project details modal ---------- */
+.project-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: rgba(6, 4, 3, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.project-modal {
+  position: relative;
+  width: min(880px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(42, 10, 10, 0.92), rgba(10, 6, 6, 0.96));
+  border: 1px solid rgba(232, 201, 160, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(179, 18, 23, 0.18) inset,
+    0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.project-modal-close {
+  position: sticky;
+  float: right;
+  top: 16px;
+  right: 16px;
+  margin: 16px 16px -42px 0;
+  z-index: 2;
+}
+
+.project-modal-gallery {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 36px 24px 20px;
+}
+
+.project-modal-image-frame {
+  position: relative;
+  width: min(480px, 62%);
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #eceff3;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.project-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-modal-nav {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 201, 160, 0.35);
+  background: rgba(245, 239, 230, 0.06);
+  color: #f5efe6;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.project-modal-nav:hover {
+  background: rgba(179, 18, 23, 0.4);
+  border-color: rgba(179, 18, 23, 0.6);
+}
+
+.project-modal-dots {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.project-modal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(245, 239, 230, 0.4);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.project-modal-dot.is-active {
+  background: #e8c9a0;
+  transform: scale(1.3);
+}
+
+.project-modal-body {
+  padding: 8px 32px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.project-modal-title {
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 500;
+  font-size: 26px;
+  margin: 0;
+}
+
+.project-modal-desc {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #cfc6b8;
+}
+
+.project-modal-github {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e8c9a0, #cfa876);
+  color: #0a0706;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(179, 18, 23, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-modal-github:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(179, 18, 23, 0.4);
+}
+
+@media (max-width: 640px) {
+  .project-modal-gallery {
+    padding: 24px 12px 16px;
+    gap: 8px;
+  }
+
+  .project-modal-image-frame {
+    width: min(320px, 68%);
+  }
+
+  .project-modal-body {
+    padding: 8px 20px 26px;
+  }
+
+  .project-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .project-modal-title {
+    font-size: 22px;
+  }
+
+  .project-modal-nav {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
 }
 
 /* ---------- tech stack chips ---------- */
