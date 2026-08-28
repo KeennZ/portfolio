@@ -12,11 +12,11 @@ useHead({
 })
 
 const skillItems = ref([
-  { id: 'vue', name: 'Vue', meta: '80%', img: '/img/skills/vue.png', lab: false },
-  { id: 'nuxt', name: 'Nuxt', meta: '85%', img: '/img/skills/nuxt.png', lab: false },
-  { id: 'tailwind', name: 'Tailwind CSS', meta: '70%', img: '/img/skills/tailwind.png', lab: false },
-  { id: 'laravel', name: 'Laravel', meta: '95%', img: '/img/skills/laravel.png', lab: false },
-  { id: 'docker', name: 'Docker', meta: '85%', img: '/img/skills/docker.png', lab: false },
+  { id: 'vue', name: 'Vue',  img: '/img/skills/vue.png', lab: false },
+  { id: 'nuxt', name: 'Nuxt',  img: '/img/skills/nuxt.png', lab: false },
+  { id: 'tailwind', name: 'Tailwind CSS',  img: '/img/skills/tailwind.png', lab: false },
+  { id: 'laravel', name: 'Laravel', img: '/img/skills/laravel.png', lab: false },
+  { id: 'docker', name: 'Docker', img: '/img/skills/docker.png', lab: false },
 ])
 
 const ORBIT_DURATION = 48 
@@ -154,6 +154,7 @@ const stuffTabs = [
 const stuffProjects = ref([
   {
     title: 'Verdant Awakening',
+    tags: 'HTML . CSS . Javascript',
     desc: 'Project untuk kompetisi LCGN dari Clevio Camp, dibangun menggunakan basic stack HTML, CSS, dan JavaScript dan berhasil menjadi salah satu finalis LCGN 2025. \n \n game ini mengangkat tema sustainibility dan lingkungan hidup, dimana pemain akan menjalankan beberapa tugas yang akan menginspirasi kebiasaan orang orang untuk melakukan gaya hidup berdampak terhadap keberlanjutan lingkungan.',
     img: '/img/project/game1.jpeg',
     images: ['/img/project/game1.jpeg', '/img/project/game1a.jpeg', '/img/project/game1b.jpeg', '/img/project/game1c.jpeg', '/img/project/game1d.jpeg' , '/img/project/game1e.jpeg' , '/img/project/game1f.jpeg' , '/img/project/game1g.jpeg' , '/img/project/game1h.jpeg' ],
@@ -165,15 +166,15 @@ const stuffProjects = ref([
     desc: 'Tugas individu Aplikasi web manajemen perpustakaan yang terintegrasi dengan containerization Docker untuk kemudahan setup dan deployment',
     img: '/img/project/tugas1.jpeg',
     images: ['/img/project/tugas1.jpeg'],
-    github: '',
+    github: 'https://github.com/KeennZ/Libranova.git',
   },
   {
     title: 'LCGN 2',
     tags: 'HTML . CSS . Javascript',
-    desc: 'Project untuk kompetisi LCGN kedua, dibangun menggunakan basic stack HTML, CSS, dan JavaScript.',
-    img: '/img/project/lcgn.jpeg',
+    desc: 'Project untuk kompetisi LCGN kedua dari Clevio Camp, dibangun menggunakan basic stack HTML, CSS, dan JavaScript dan berhasil menjadi salah satu peserta pameran di puncak acara LCGN 2026. \n \n game ini mengangkat tema anti koruptor dimana mekanisme gamenya menceritakan perjalanan hidup raka untuk mengungkap korupsi ayahnya selama ini dan beberapa tantangan di setiap levelnya, di akhir game akan ada beberapa pilihan untuk pemain setelah bukti terkumpul',
     images: ['/img/project/lcgn.jpeg'],
-    github: '',
+    img: '/img/project/lcgn.jpeg',
+    github: 'https://github.com/KeennZ/Warisan-Ayah.git',
   },
   {
     title: 'Van Aroma Visitor',
@@ -181,7 +182,7 @@ const stuffProjects = ref([
     desc: 'Sistem manajemen kunjungan tamu untuk PT. Van Aroma.',
     img: '/img/project/va1.jpeg',
     images: ['/img/project/va1.jpeg'],
-    github: '',
+    github: 'https://github.com/omen65/vanaroma_visitor.git',
   },
   {
     title: 'Van Aroma Security',
@@ -189,7 +190,7 @@ const stuffProjects = ref([
     desc: 'Sistem keamanan internal untuk kebutuhan operasional Van Aroma.',
     img: '/img/project/va2.jpeg',
     images: ['/img/project/va2.jpeg'],
-    github: '',
+    github: 'https://github.com/omen65/vanaroma_security.git',
   },
   {
     title: 'Van Aroma Job Portal',
@@ -197,7 +198,7 @@ const stuffProjects = ref([
     desc: 'Portal lowongan kerja internal untuk PT. Van Aroma.',
     img: '/img/project/va3.jpeg',
     images: ['/img/project/va3.jpeg'],
-    github: '',
+    github: 'https://github.com/dhaffaabdillah/vanaroma_career.git',
   },
 ])
 
